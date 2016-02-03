@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title></title>
+    </head>
+    <body>
+        <script>
+            //Dojo config
+            var dojoConfig = {
+                async: true,
+                paths: {
+                    "extension": location.pathname.replace(/\/[^/]+$/, '')
+                }
+            };
+        </script>
+        <script src="//js.arcgis.com/3.15/"></script>
+        <script>
+            require([
+                "esri/opsdashboard/featureActionProxy",
+                "esri/tasks/query"
+            ], function (featureActionProxy, Query) {
+                featureActionProxy.on("execute", function (eventProperties) {
+                   if (console) {
+                       console.log(eventProperties);
+                   }
+                    console.log("hello again");
+                    
+                    //get list of features
+                    //var config = eventProperties.config;
+                    var features = eventProperties.features.features;
+                    
+                     //if no features were returned - do nothing
+                    var featureCount = features.length;
+                    if (featureCount === 0) {
+                        return;
+                    }
+                    //Get the unique values of the selection field
+                    var values = [];
+                    for (var f = 0; f < featureCount; f++) {
+//                        values.push(features[f].attributes[config.originField]);
+                        values.push(features[f].attributes.STUSPS);
+                    }
+                    console.log(values);
+                    //construct where statement
+//                    var where = config.targetField + ' = "' +values.join('" OR ' + config.targetField + ' = "') + '"';
+                    var where = "STATE_ABBR = '" +values.join("' OR STATE_ABBR = '") + "'";
+//                    var targetDSPreq = this.getDataSourceProxy(config.targetFC);
+                    console.log(where);
+                    var targetDSPreq = this.getDataSourceProxy("23705c8e-9c7e-43e7-9db6-402d16ac9c6c");
+                    targetDSPreq.then(function(dsp) {
+                        console.log(dsp);
+                        //dsp.clearSelection();
+                        var q = new Query();
+                        q.where = where;
+                        //q.outFields = ["*"]
+                        console.log(q);
+                        dsp.selectFeatures(q);
+                    });
+                    
+                });
+            });
+        </script>
+    </body>
+</html>

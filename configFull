@@ -1,0 +1,17 @@
+{
+  "type": "Feature Action",
+  "title": "Push Selection",
+  "description": "Select Items in a Second Data Source",
+  "thumbnailPath": "download.png",
+  "useDataFromView": true,
+  "runtime": {
+    "path": "pushSelectionFeatureAction.html",
+    "iconPath": "download.png",
+    "supportMultiFeatures": true
+  },
+    "configuration": {
+    "path": "pushSelectionConfig.html",
+    "requireDataSource": true
+  },
+  "credits": "By James Tedrick, Esri (http://www.esri.com)"
+}
